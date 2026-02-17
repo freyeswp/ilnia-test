@@ -1,0 +1,13 @@
+# IDE
+.idea/
+
+# Symfony
+backend/vendor/
+backend/var/
+backend/.env.local
+
+# Node
+frontend/node_modules/
+
+# Logs
+*.log

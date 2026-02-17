@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  backend:
+    build: ./docker/backend
+    container_name: ilnia_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/var/www/app
+    working_dir: /var/www/app
+
+  frontend:
+    build: ./docker/frontend
+    container_name: ilnia_frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+    working_dir: /app
+    stdin_open: true
+    tty: true
