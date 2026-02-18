@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { calculateSum } from "../services/sumService";
+import "./SumCalculator.css";
 
 /**
  * Component that handles the user interface
@@ -13,9 +14,6 @@ const SumCalculator = () => {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
 
-    /**
-     * Real-time validation
-     */
     const validationError = useMemo(() => {
         if (a === "" || b === "") {
             return "Both fields are required.";
@@ -31,8 +29,16 @@ const SumCalculator = () => {
     const isFormValid = !validationError;
 
     /**
-     * Executes the calculation by calling the service
+     * Formats number with thousands separators
      */
+    const formatNumber = (value) => {
+        if (value === null || value === undefined) return "";
+
+        return new Intl.NumberFormat("en-US", {
+            maximumFractionDigits: 20
+        }).format(value);
+    };
+
     const handleCalculation = async () => {
 
         if (!isFormValid) {
@@ -46,7 +52,7 @@ const SumCalculator = () => {
             setResult(null);
 
             const sum = await calculateSum(a, b);
-            setResult(sum);
+            setResult(Number(sum));
 
         } catch (err) {
 
@@ -58,9 +64,6 @@ const SumCalculator = () => {
         }
     };
 
-    /**
-     * Handle Enter key
-     */
     const handleKeyDown = (e) => {
         if (e.key === "Enter") {
             handleCalculation();
@@ -68,72 +71,63 @@ const SumCalculator = () => {
     };
 
     return (
-        <div>
+        <div className="sum-wrapper">
+            <div className="sum-card">
 
-            <div style={{ display: "flex", gap: "10px" }}>
+                <h1 className="sum-title">Sum Calculator</h1>
+                <p className="sum-subtitle">
+                    Enter two numbers to calculate their sum
+                </p>
 
-                <input
-                    type="number"
-                    placeholder="Value A"
-                    value={a}
-                    onChange={(e) => {
-                        setA(e.target.value);
-                        setError(null); // clear error while typing
-                    }}
-                    onKeyDown={handleKeyDown}
-                    style={{
-                        border: a !== "" && isNaN(a) ? "1px solid red" : undefined
-                    }}
-                />
+                <div className="sum-form">
 
-                <input
-                    type="number"
-                    placeholder="Value B"
-                    value={b}
-                    onChange={(e) => {
-                        setB(e.target.value);
-                        setError(null); // clear error while typing
-                    }}
-                    onKeyDown={handleKeyDown}
-                    style={{
-                        border: b !== "" && isNaN(b) ? "1px solid red" : undefined
-                    }}
-                />
+                    <input
+                        type="number"
+                        placeholder="Value A"
+                        value={a}
+                        onChange={(e) => {
+                            setA(e.target.value);
+                            setError(null);
+                        }}
+                        onKeyDown={handleKeyDown}
+                        className={`sum-input ${a !== "" && isNaN(a) ? "error" : ""}`}
+                    />
 
-                <button
-                    onClick={handleCalculation}
-                    disabled={loading || !isFormValid}
-                    style={{
-                        opacity: loading || !isFormValid ? 0.6 : 1,
-                        cursor: loading || !isFormValid ? "not-allowed" : "pointer",
-                        transition: "all 0.2s ease"
-                    }}
-                >
-                    {loading ? "Calculating..." : "Calculate"}
-                </button>
+                    <input
+                        type="number"
+                        placeholder="Value B"
+                        value={b}
+                        onChange={(e) => {
+                            setB(e.target.value);
+                            setError(null);
+                        }}
+                        onKeyDown={handleKeyDown}
+                        className={`sum-input ${b !== "" && isNaN(b) ? "error" : ""}`}
+                    />
+
+                    <button
+                        onClick={handleCalculation}
+                        disabled={loading || !isFormValid}
+                        className="sum-button"
+                    >
+                        {loading ? "Calculating..." : "Calculate"}
+                    </button>
+
+                </div>
+
+                {result !== null && (
+                    <div className="sum-result">
+                        Result: {formatNumber(result)}
+                    </div>
+                )}
+
+                {error && (
+                    <div className="sum-error">
+                        {error}
+                    </div>
+                )}
 
             </div>
-
-            {/* Animated Result */}
-            {result !== null && (
-                <p
-                    style={{
-                        marginTop: "15px",
-                        opacity: result !== null ? 1 : 0,
-                        transition: "opacity 0.3s ease-in"
-                    }}
-                >
-                    Result: {result}
-                </p>
-            )}
-
-            {/* Error Message */}
-            {error && (
-                <p style={{ marginTop: "15px", color: "red" }}>
-                    Error: {error}
-                </p>
-            )}
-
         </div>
     );
 };
