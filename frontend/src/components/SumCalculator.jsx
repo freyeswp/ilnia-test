@@ -2,53 +2,53 @@ import React, { useState } from "react";
 import { calculateSum } from "../services/sumService";
 
 /**
- * Componente que maneja la interfaz
- * y la lógica de interacción del usuario.
+ * Component that handles the user interface
+ * and interaction logic.
  */
 const SumCalculator = () => {
 
     const [a, setA] = useState("");
     const [b, setB] = useState("");
-    const [resultado, setResultado] = useState(null);
+    const [result, setResult] = useState(null);
     const [error, setError] = useState(null);
-    const [cargando, setCargando] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     /**
-     * Validación básica antes de enviar al backend
+     * Basic validation before sending to the backend
      */
-    const validarInputs = () => {
+    const validateInputs = () => {
         if (a === "" || b === "") {
-            return "Ambos campos son obligatorios.";
+            return "Both fields are required.";
         }
 
         if (isNaN(a) || isNaN(b)) {
-            return "Los valores deben ser numéricos.";
+            return "Both 'a' and 'b' must be numeric.";
         }
 
         return null;
     };
 
     /**
-     * Ejecuta el cálculo llamando al servicio
+     * Executes the calculation by calling the service
      */
-    const manejarCalculo = async () => {
+    const handleCalculation = async () => {
 
-        setResultado(null);
+        setResult(null);
         setError(null);
 
-        const errorValidacion = validarInputs();
+        const validationError = validateInputs();
 
-        if (errorValidacion) {
-            setError(errorValidacion);
+        if (validationError) {
+            setError(validationError);
             return;
         }
 
         try {
-            setCargando(true);
+            setLoading(true);
 
-            const suma = await calculateSum(a, b);
+            const sum = await calculateSum(a, b);
 
-            setResultado(suma);
+            setResult(sum);
 
         } catch (err) {
 
@@ -56,7 +56,7 @@ const SumCalculator = () => {
 
         } finally {
 
-            setCargando(false);
+            setLoading(false);
         }
     };
 
@@ -67,30 +67,30 @@ const SumCalculator = () => {
 
                 <input
                     type="number"
-                    placeholder="Valor A"
+                    placeholder="Value A"
                     value={a}
                     onChange={(e) => setA(e.target.value)}
                 />
 
                 <input
                     type="number"
-                    placeholder="Valor B"
+                    placeholder="Value B"
                     value={b}
                     onChange={(e) => setB(e.target.value)}
                 />
 
                 <button
-                    onClick={manejarCalculo}
-                    disabled={cargando}
+                    onClick={handleCalculation}
+                    disabled={loading}
                 >
-                    {cargando ? "Calculando..." : "Calculate"}
+                    {loading ? "Calculating..." : "Calculate"}
                 </button>
 
             </div>
 
-            {resultado !== null && (
+            {result !== null && (
                 <p style={{ marginTop: "15px" }}>
-                    Resultado: {resultado}
+                    Result: {result}
                 </p>
             )}
 

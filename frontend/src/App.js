@@ -7,7 +7,7 @@ import SumCalculator from "./components/SumCalculator";
 function App() {
   return (
       <div style={{ padding: "40px" }}>
-        <h2>Calculadora de Suma</h2>
+        <h2>Calculator</h2>
         <SumCalculator />
       </div>
   );
