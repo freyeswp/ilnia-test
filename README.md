@@ -14,7 +14,7 @@ https://github.com/freyeswp/ilnia-test.git
 
 ---
 
-# 📥 1. Clonar el proyecto
+#  1. Clonar el proyecto
 
 ```bash
 git clone https://github.com/freyeswp/ilnia-test.git
@@ -23,7 +23,7 @@ cd ilnia-test
 
 ---
 
-# 📦 2. Requisitos
+# 2. Requisitos
 
 ## Para ejecución con Docker (recomendado)
 
@@ -39,7 +39,7 @@ cd ilnia-test
 
 ---
 
-# 🚀 3. Ejecución con Docker (Recomendado)
+# 3. Ejecución con Docker (Recomendado)
 
 Desde la raíz del proyecto ejecutar:
 
@@ -60,7 +60,7 @@ http://localhost:3000
 
 ---
 
-# 🛠 4. Ejecución Manual (Sin Docker)
+#  4. Ejecución Manual (Sin Docker)
 
 ## 4.1 Backend
 
@@ -98,7 +98,7 @@ REACT_APP_API_URL=http://localhost:8000
 
 ---
 
-# 🧠 Parte 1 — Backend (Symfony)
+#  Parte 1 — Backend (Symfony)
 
 ## Endpoint implementado
 
@@ -147,7 +147,7 @@ backend/src/Controller/SumController.php
 
 ---
 
-# 🎨 Parte 2 — Frontend (React)
+#  Parte 2 — Frontend (React)
 
 La interfaz incluye:
 
@@ -188,7 +188,7 @@ frontend/src/App.js
 
 ---
 
-# 🧪 5. Prueba manual del endpoint
+#  5. Prueba manual del endpoint
 
 ```bash
 curl -X POST http://localhost:8000/api/sum \
@@ -222,7 +222,7 @@ Respuesta:
 
 ---
 
-# 📁 6. Estructura del Proyecto
+#  6. Estructura del Proyecto
 
 ```
 ilnia-test
@@ -296,7 +296,7 @@ ilnia-test
 
 ---
 
-# ✅ 7. Cumplimiento de Requisitos
+# 7. Cumplimiento de Requisitos
 
 ## Backend
 
