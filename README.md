@@ -293,26 +293,3 @@ ilnia-test
         └── setupTests.js
 
 ```
-
----
-
-# 7. Cumplimiento de Requisitos
-
-## Backend
-
-- ✔ Ruta POST `/api/sum`
-- ✔ Validación de datos
-- ✔ Respuesta JSON correcta
-- ✔ Código HTTP 400 en error
-- ✔ No usa base de datos
-
-## Frontend
-
-- ✔ Dos inputs
-- ✔ Botón Calculate
-- ✔ Uso de React Hooks
-- ✔ Uso de fetch
-- ✔ Estado de carga
-- ✔ Manejo de errores
-- ✔ Visualización del resultado
-
