@@ -2,7 +2,9 @@ version: "3.8"
 
 services:
   backend:
-    build: ./docker/backend
+    build:
+      context: ./docker/backend
+      dockerfile: Dockerfile
     container_name: ilnia_backend
     ports:
       - "8000:8000"
