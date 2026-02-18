@@ -1,12 +1,11 @@
 #!/bin/sh
 
-if [ ! -f "composer.json" ]; then
-  echo "Creanto proyecto Symfony..."
-  symfony new /var/www/app --no-git
-fi
-
 cd /var/www/app
 
-composer install
+# Instala dependencias si es necesario
+if [ -f "composer.json" ]; then
+    composer install
+fi
 
-symfony server:start --no-tls --allow-http --port=8000 --listen-ip=0.0.0.0
+# Inicia Symfony server para desarrollo
+symfony server:start --no-tls --allow-http --allow-all-ip --port=8000
