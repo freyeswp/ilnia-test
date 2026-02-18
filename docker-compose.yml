@@ -9,14 +9,22 @@ services:
     volumes:
       - ./backend:/var/www/app
     working_dir: /var/www/app
+    tty: true
 
   frontend:
-    build: ./docker/frontend
+    build:
+      context: ./frontend
+      dockerfile: ../docker/frontend/Dockerfile
     container_name: ilnia_frontend
     ports:
       - "3000:3000"
     volumes:
       - ./frontend:/app
+      - /app/node_modules
     working_dir: /app
     stdin_open: true
     tty: true
+    environment:
+      - HOST=0.0.0.0
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true

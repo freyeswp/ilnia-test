@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { calculateSum } from "../services/sumService";
 
 /**
@@ -14,9 +14,9 @@ const SumCalculator = () => {
     const [loading, setLoading] = useState(false);
 
     /**
-     * Basic validation before sending to the backend
+     * Real-time validation
      */
-    const validateInputs = () => {
+    const validationError = useMemo(() => {
         if (a === "" || b === "") {
             return "Both fields are required.";
         }
@@ -26,28 +26,26 @@ const SumCalculator = () => {
         }
 
         return null;
-    };
+    }, [a, b]);
+
+    const isFormValid = !validationError;
 
     /**
      * Executes the calculation by calling the service
      */
     const handleCalculation = async () => {
 
-        setResult(null);
-        setError(null);
-
-        const validationError = validateInputs();
-
-        if (validationError) {
+        if (!isFormValid) {
             setError(validationError);
             return;
         }
 
         try {
             setLoading(true);
+            setError(null);
+            setResult(null);
 
             const sum = await calculateSum(a, b);
-
             setResult(sum);
 
         } catch (err) {
@@ -60,6 +58,15 @@ const SumCalculator = () => {
         }
     };
 
+    /**
+     * Handle Enter key
+     */
+    const handleKeyDown = (e) => {
+        if (e.key === "Enter") {
+            handleCalculation();
+        }
+    };
+
     return (
         <div>
 
@@ -69,31 +76,58 @@ const SumCalculator = () => {
                     type="number"
                     placeholder="Value A"
                     value={a}
-                    onChange={(e) => setA(e.target.value)}
+                    onChange={(e) => {
+                        setA(e.target.value);
+                        setError(null); // clear error while typing
+                    }}
+                    onKeyDown={handleKeyDown}
+                    style={{
+                        border: a !== "" && isNaN(a) ? "1px solid red" : undefined
+                    }}
                 />
 
                 <input
                     type="number"
                     placeholder="Value B"
                     value={b}
-                    onChange={(e) => setB(e.target.value)}
+                    onChange={(e) => {
+                        setB(e.target.value);
+                        setError(null); // clear error while typing
+                    }}
+                    onKeyDown={handleKeyDown}
+                    style={{
+                        border: b !== "" && isNaN(b) ? "1px solid red" : undefined
+                    }}
                 />
 
                 <button
                     onClick={handleCalculation}
-                    disabled={loading}
+                    disabled={loading || !isFormValid}
+                    style={{
+                        opacity: loading || !isFormValid ? 0.6 : 1,
+                        cursor: loading || !isFormValid ? "not-allowed" : "pointer",
+                        transition: "all 0.2s ease"
+                    }}
                 >
                     {loading ? "Calculating..." : "Calculate"}
                 </button>
 
             </div>
 
+            {/* Animated Result */}
             {result !== null && (
-                <p style={{ marginTop: "15px" }}>
+                <p
+                    style={{
+                        marginTop: "15px",
+                        opacity: result !== null ? 1 : 0,
+                        transition: "opacity 0.3s ease-in"
+                    }}
+                >
                     Result: {result}
                 </p>
             )}
 
+            {/* Error Message */}
             {error && (
                 <p style={{ marginTop: "15px", color: "red" }}>
                     Error: {error}

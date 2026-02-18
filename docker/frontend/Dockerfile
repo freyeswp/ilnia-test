@@ -2,9 +2,10 @@ FROM node:18
 
 WORKDIR /app
 
-RUN npm install -g create-react-app
+COPY package.json package-lock.json* ./
 
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+RUN npm install
 
-CMD ["/entrypoint.sh"]
+EXPOSE 3000
+
+CMD ["npm", "start"]
